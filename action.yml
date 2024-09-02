@@ -6,16 +6,16 @@ inputs:
   path:
     description: 'Directory to compress and upload'
     required: true
-  exclude:
-    description: 'List of paths (globs) to exclude, like "tar" expects for --exclude"'
-    default: []
+  extra:
+    description: 'Extra arguments for tar'
+    default: ''
 
 runs:
   using: "composite"
   steps:
     - name: Tar
       shell: bash
-      run: tar czf '${{ inputs.name }}.tar.gz' '${{ inputs.path }}' ${{ [].concat([""], inputs.exclude).join(" --exclude=") }}
+      run: tar czf '${{ inputs.name }}.tar.gz' '${{ inputs.path }}' ${{ inputs.extra }}
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
