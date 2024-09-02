@@ -1,0 +1,25 @@
+name: 'Upload Everest CI artifact'
+inputs:
+  name:
+    description: 'Name of the artifact, e.g. FStar'
+    required: true
+  path:
+    description: 'Directory to compress and upload'
+    required: true
+  exclude:
+    description: 'List of paths (globs) to exclude, like "tar" expects for --exclude"'
+    default: []
+
+runs:
+  using: "composite"
+  steps:
+    - name: Tar
+      shell: bash
+      run: tar czf '${{ inputs.name }}.tar.gz' '${{ inputs.path }}' ${{ [].concat([""], inputs.exclude).join(" --exclude=") }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@master
+      with:
+        path: ${{ inputs.name }}.tar.gz
+        name: ${{ inputs.name }}
+        retention-days: 1
