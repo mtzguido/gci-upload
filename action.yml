@@ -4,18 +4,24 @@ inputs:
     description: 'Name of the artifact, e.g. FStar'
     required: true
   path:
-    description: 'Directory to compress and upload'
-    required: true
+    description: 'Directory to compress and upload (defaults to the name if unset)'
   extra:
     description: 'Extra arguments for tar'
     default: ''
+  exclude_git:
+    description: 'Exclude .git in the path. Defaults to true'
+    default: true
 
 runs:
   using: "composite"
   steps:
-    - name: Tar
+    - name: Create tarball
       shell: bash
-      run: tar czf '${{ inputs.name }}.tar.gz' ${{ inputs.extra }} '${{ inputs.path }}'
+      run: |
+        tar czf '${{ inputs.name }}.tar.gz' \
+          ${{ inputs.extra }} \
+          ${{ inputs.exclude_git && ("--exclude=" + inputs.path + "/.git") }} \
+          '${{ inputs.path || inputs.name }}'
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
