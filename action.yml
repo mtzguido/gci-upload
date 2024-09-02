@@ -15,12 +15,20 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: compute exclude_git
+      run: |
+        if [ -z '${{inputs.exclude_git}}' ]; then
+          echo "EXCLUDE_GIT=" >>$GITHUB_ENV
+        else
+          echo "EXCLUDE_GIT=--exclude=${{inputs.path}}/.git" >>$GITHUB_ENV
+        fi
+
     - name: Create tarball
       shell: bash
       run: |
         tar czf '${{ inputs.name }}.tar.gz' \
           ${{ inputs.extra }} \
-          ${{ inputs.exclude_git && join(['--exclude=',inputs.path,'/.git']) }} \
+          "${EXCLUDE_GIT}" \
           '${{ inputs.path || inputs.name }}'
 
     - name: Upload artifact
