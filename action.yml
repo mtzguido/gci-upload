@@ -16,6 +16,7 @@ runs:
   using: "composite"
   steps:
     - name: compute exclude_git
+      shell: bash
       run: |
         if [ -z '${{inputs.exclude_git}}' ]; then
           echo "EXCLUDE_GIT=" >>$GITHUB_ENV
