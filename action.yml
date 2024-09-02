@@ -15,7 +15,7 @@ runs:
   steps:
     - name: Tar
       shell: bash
-      run: tar czf '${{ inputs.name }}.tar.gz' '${{ inputs.path }}' ${{ inputs.extra }}
+      run: tar czf '${{ inputs.name }}.tar.gz' ${{ inputs.extra }} '${{ inputs.path }}'
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
