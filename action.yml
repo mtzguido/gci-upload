@@ -20,7 +20,7 @@ runs:
       run: |
         tar czf '${{ inputs.name }}.tar.gz' \
           ${{ inputs.extra }} \
-          ${{ inputs.exclude_git && join('--exclude=',inputs.path,'/.git') }} \
+          ${{ inputs.exclude_git && join(['--exclude=',inputs.path,'/.git']) }} \
           '${{ inputs.path || inputs.name }}'
 
     - name: Upload artifact
