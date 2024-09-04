@@ -21,7 +21,7 @@ runs:
         if [ -z '${{inputs.exclude_git}}' ]; then
           echo "EXCLUDE_GIT=" >>$GITHUB_ENV
         else
-          echo "EXCLUDE_GIT=--exclude=${{inputs.path}}/.git" >>$GITHUB_ENV
+          echo "EXCLUDE_GIT=--exclude=${{inputs.path || inputs.name}}/.git" >>$GITHUB_ENV
         fi
 
     - name: Create tarball
