@@ -5,6 +5,9 @@ inputs:
     required: true
   path:
     description: 'Directory to compress and upload (defaults to the name if unset)'
+  hometag:
+    description: 'If present, downloaders will get a <tag>_HOME env variable set'
+    default: ''
   extra:
     description: 'Extra arguments for tar'
     default: ''
@@ -23,6 +26,11 @@ runs:
         else
           echo "EXCLUDE_GIT=--exclude=${{inputs.path || inputs.name}}/.git" >>$GITHUB_ENV
         fi
+
+    - name: Create hometag files
+      if: ${{ inputs.hometag }}
+      run: |
+        echo ${{ inputs.hometag }} > ${{ inputs.path }}/.hometag
 
     - name: Create tarball
       shell: bash
