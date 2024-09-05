@@ -31,7 +31,7 @@ runs:
       if: ${{ inputs.hometag }}
       shell: bash
       run: |
-        echo ${{ inputs.hometag }} > ${{ inputs.path }}/.hometag
+        echo ${{ inputs.hometag }} > ${{ inputs.path || inputs.name }}/.hometag
 
     - name: Create tarball
       shell: bash
