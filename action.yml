@@ -29,6 +29,7 @@ runs:
 
     - name: Create hometag files
       if: ${{ inputs.hometag }}
+      shell: bash
       run: |
         echo ${{ inputs.hometag }} > ${{ inputs.path }}/.hometag
 
